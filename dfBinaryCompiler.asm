@@ -8,7 +8,7 @@ section .text
 _start:
     push rbp
     mov rbp,rsp
-    mov rax,508
+    mov rax,506
     mov [byteSize],rax
     mov rax,2
     mov rdi,[rbp+24]
@@ -32,6 +32,11 @@ _start:
     mov rsi,1
     syscall
     mov [fileId],rax
+    mov rax,0x00b0
+    mov [instruction],rax
+    lea rax,[instruction]
+    mov rdx,2
+    call _writeToFile
     jmp _simpleCompiler
 
 _simpleCompiler:
@@ -73,7 +78,14 @@ _d:
     mov [byteSize],rax
     jmp _simpleCompiler
 _s:
-    ; TODO
+    mov rax,0xe0f6
+    mov [instruction],rax
+    lea rax,[instruction]
+    mov rdx,2
+    call _writeToFile
+    mov rax,[byteSize]
+    sub rax,2
+    mov [byteSize],rax
     jmp _simpleCompiler
 _o:
     mov rax,0x10cd0eb4
